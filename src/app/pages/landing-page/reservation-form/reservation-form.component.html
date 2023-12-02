@@ -1,0 +1,6 @@
+<form (ngSubmit)="onSubmit()">
+    <input type="text" placeholder="Naziv Sestanka" [(ngModel)]="reservationTitle" name="title">
+    <input type="datetime-local" [(ngModel)]="reservationTime" name="time">
+    <button type="submit">Rezerviraj</button>
+  </form>
+  
