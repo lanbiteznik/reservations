@@ -1,6 +1,23 @@
-<form (ngSubmit)="onSubmit()">
-    <input type="text" placeholder="Naziv Sestanka" [(ngModel)]="reservationTitle" name="title">
-    <input type="datetime-local" [(ngModel)]="reservationTime" name="time">
-    <button type="submit">Rezerviraj</button>
-  </form>
-  
+<p-dialog header="New Reservation" [(visible)]="displayModal">
+  <div class="p-fluid">
+    <div class="p-field">
+      <label for="title">Title</label>
+      <input id="title" type="text" pInputText [(ngModel)]="reservationTitle" class="p-inputtext p-component">
+    </div>
+
+    <div class="p-field">
+      <label for="start">Start</label>
+      <p-calendar id="start" [(ngModel)]="reservationStart" [showTime]="true"></p-calendar>
+    </div>
+
+    <div class="p-field">
+      <label for="end">End</label>
+      <p-calendar id="end" [(ngModel)]="reservationEnd" [showTime]="true"></p-calendar>
+    </div>
+
+    <div class="flex justify-end space-x-2 mt-4">
+      <button pButton label="Save" class="p-button p-component p-button-success" (click)="save()"></button>
+      <button pButton label="Cancel" class="p-button p-component p-button-secondary" (click)="cancel()"></button>
+    </div>
+  </div>
+</p-dialog>

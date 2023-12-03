@@ -8,6 +8,11 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import { LandingPageComponent } from './pages/landing-page/landing-page.component';
 import { ReservationFormComponent } from './pages/landing-page/reservation-form/reservation-form.component';
 import { FormsModule } from '@angular/forms';
+import { CalendarModule } from 'primeng/calendar';
+import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
+import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [AppComponent, NavBarComponent, LandingPageComponent, ReservationFormComponent],
@@ -15,9 +20,14 @@ import { FormsModule } from '@angular/forms';
     BrowserModule,
     HttpClientModule,
     FullCalendarModule,
-    FormsModule
+    FormsModule,
+    CalendarModule,
+    ButtonModule,
+    DialogModule,
+    DynamicDialogModule,
+    BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [DialogService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
