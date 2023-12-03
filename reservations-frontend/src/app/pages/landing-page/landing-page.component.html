@@ -1,7 +1,7 @@
 <div class="flex w-full h-full p-12 justify-center">
   <full-calendar [options]="calendarOptions" class="w-[69%]">
     <ng-template #eventContent let-arg>
-      <b>{{ arg.event.title }}</b>
     </ng-template>
   </full-calendar>
 </div>
+<app-reservation-form [reservationStart]="startDate" [reservationEnd]="endDate"></app-reservation-form>

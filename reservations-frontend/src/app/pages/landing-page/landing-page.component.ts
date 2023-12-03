@@ -8,20 +8,26 @@ import { ReservationService, Reservation } from 'src/app/services/reservations.s
 import { DynamicDialogRef, DynamicDialogConfig, DialogService } from 'primeng/dynamicdialog';
 import { ReservationFormComponent } from './reservation-form/reservation-form.component';
 import { FullCalendarComponent } from '@fullcalendar/angular';
+import { ReservationModalService } from 'src/app/services/reservation-modal.service';
 
 @Component({
   selector: 'app-landing-page',
   templateUrl: './landing-page.component.html',
-  styleUrls: ['./landing-page.component.scss']
+  styleUrls: ['./landing-page.component.scss'],
+  providers: [DialogService]
 })
 export class LandingPageComponent implements OnInit {
 
   dialogRef?: DynamicDialogRef;
   calendarOptions?: CalendarOptions;
 
+  startDate?: Date;
+  endDate?: Date;
+
   @ViewChild('fullcalendar') fullcalendar?: FullCalendarComponent;
 
-  constructor(private dialogService: DialogService, private reservationService: ReservationService) {}
+  constructor(public modalService: ReservationModalService, 
+    private reservationService: ReservationService) {}
 
   ngOnInit() {
     this.calendarOptions = {
@@ -41,38 +47,31 @@ export class LandingPageComponent implements OnInit {
   }
 
   handleDateClick(arg: any) {
-    this.dialogRef = this.dialogService.open(ReservationFormComponent, {
-      header: 'Create Reservation',
-      width: '70%',
-      data: { start: arg.date, end: arg.date } // Pass the clicked date as start and end
-    });
-
-    this.dialogRef.onClose.subscribe((reservation: Reservation) => {
-      if (reservation) {
-        this.saveReservation(reservation);
-      }
-    });
+    this.startDate = arg.date;
+    this.endDate = arg.date; // Adjust this as per your requirement
+    this.modalService.openModal();
   }
+  
 
   saveReservation(reservation: Reservation) {
     this.reservationService.createReservation(reservation).subscribe(savedReservation => {
       const calendarApi = this.fullcalendar?.getApi();
-      console.log(savedReservation)
-      //calendarApi.addEvent(reservation);
+      calendarApi?.addEvent({
+        title: savedReservation.name,
+        start: savedReservation.start,
+        end: savedReservation.end
+      });
     });
   }
 
   loadReservations() {
     this.reservationService.getAllReservations().subscribe(reservations => {
-      const calendarEvents: EventInput[] = reservations.map(reservation => ({
-        id: reservation.id?.toString(),  // Convert ID to string
+      this.calendarOptions!.events = reservations.map(reservation => ({
+        id: reservation.id?.toString(),
         title: reservation.name,
         start: reservation.start,
         end: reservation.end
-        // Add other necessary event properties here
       }));
-  
-      this.calendarOptions!.events = calendarEvents;
     });
   }
 }

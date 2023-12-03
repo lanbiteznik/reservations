@@ -1,35 +1,40 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { ReservationModalService } from 'src/app/services/reservation-modal.service';
 
-@Component({
-  selector: 'app-reservation-form',
-  templateUrl: './reservation-form.component.html',
-  styleUrls: ['./reservation-form.component.scss']
-})
 @Component({
   selector: 'app-reservation-form',
   templateUrl: './reservation-form.component.html'
-  // styleUrls: ['./reservation-form.component.scss']
+  // styleUrls if necessary
 })
-export class ReservationFormComponent {
+export class ReservationFormComponent implements OnInit, OnDestroy {
+  @Input() reservationStart?: Date;
+  @Input() reservationEnd?: Date;
   reservationTitle?: string;
-  reservationStart?: Date;
-  reservationEnd?: Date;
-  displayModal: boolean = false;
+  displayModal: boolean = true;
+  private subscription: Subscription = new Subscription();
 
-  @Output() onSave = new EventEmitter<any>();
-  @Output() onCancel = new EventEmitter<void>();
+  constructor(public modalService: ReservationModalService) {}
+
+  ngOnInit() {
+    this.subscription.add(this.modalService.displayModal$.subscribe(value => {
+      this.displayModal = value;
+    }));
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+  close() {
+    this.modalService.closeModal();
+  }
 
   save() {
-    this.onSave.emit({
-      title: this.reservationTitle,
-      start: this.reservationStart,
-      end: this.reservationEnd
-    });
-    this.displayModal = false;
+    this.modalService.closeModal();
   }
 
-  cancel() {
-    this.onCancel.emit();
-    this.displayModal = false;
+  validateForm(): boolean {
+    return !!this.reservationTitle && !!this.reservationStart && !!this.reservationEnd;
   }
+  
 }

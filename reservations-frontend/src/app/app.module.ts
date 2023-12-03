@@ -7,12 +7,12 @@ import { NavBarComponent } from "./common/navbar/navbar.component";
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { LandingPageComponent } from './pages/landing-page/landing-page.component';
 import { ReservationFormComponent } from './pages/landing-page/reservation-form/reservation-form.component';
-import { FormsModule } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AppComponent, NavBarComponent, LandingPageComponent, ReservationFormComponent],
@@ -25,7 +25,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ButtonModule,
     DialogModule,
     DynamicDialogModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
   ],
   providers: [DialogService],
   bootstrap: [AppComponent],
