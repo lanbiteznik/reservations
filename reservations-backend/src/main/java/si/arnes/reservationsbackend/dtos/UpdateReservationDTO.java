@@ -1,15 +1,14 @@
 package si.arnes.reservationsbackend.dtos;
 
-
-import java.time.LocalDateTime;
+import java.util.Date;
 
 public class UpdateReservationDTO {
     private Long id;
     private String name;
-    private LocalDateTime start;
-    private LocalDateTime end;
+    private Date start;
+    private Date end;
 
-    public UpdateReservationDTO(Long id, String name, LocalDateTime start, LocalDateTime end) {
+    public UpdateReservationDTO(Long id, String name, Date start, Date end) {
         this.id = id;
         this.name = name;
         this.start = start;
@@ -32,19 +31,19 @@ public class UpdateReservationDTO {
         this.name = name;
     }
 
-    public LocalDateTime getStart() {
+    public Date getStart() {
         return start;
     }
 
-    public void setStart(LocalDateTime start) {
+    public void setStart(Date start) {
         this.start = start;
     }
 
-    public LocalDateTime getEnd() {
+    public Date getEnd() {
         return end;
     }
 
-    public void setEnd(LocalDateTime end) {
+    public void setEnd(Date end) {
         this.end = end;
     }
 

@@ -1,77 +1,98 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { CalendarOptions, EventInput } from '@fullcalendar/core';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import listPlugin from '@fullcalendar/list';
-import interactionPlugin from '@fullcalendar/interaction';
-import { ReservationService, Reservation } from 'src/app/services/reservations.service';
-import { DynamicDialogRef, DynamicDialogConfig, DialogService } from 'primeng/dynamicdialog';
-import { ReservationFormComponent } from './reservation-form/reservation-form.component';
-import { FullCalendarComponent } from '@fullcalendar/angular';
-import { ReservationModalService } from 'src/app/services/reservation-modal.service';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from "@angular/core";
+import { CalendarOptions, EventInput } from "@fullcalendar/core";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import listPlugin from "@fullcalendar/list";
+import interactionPlugin from "@fullcalendar/interaction";
+import { ReservationService } from "src/app/services/reservations.service";
+import { FullCalendarComponent } from "@fullcalendar/angular";
+import { ReservationModalService } from "src/app/services/reservation-modal.service";
+import { BehaviorSubject } from "rxjs";
 
 @Component({
-  selector: 'app-landing-page',
-  templateUrl: './landing-page.component.html',
-  styleUrls: ['./landing-page.component.scss'],
-  providers: [DialogService]
+  selector: "app-landing-page",
+  templateUrl: "./landing-page.component.html",
+  styleUrls: ["./landing-page.component.scss"],
 })
 export class LandingPageComponent implements OnInit {
-
-  dialogRef?: DynamicDialogRef;
   calendarOptions?: CalendarOptions;
 
   startDate?: Date;
   endDate?: Date;
+  selectedReservationId?: number;
+  reservationTitle?: string;
 
-  @ViewChild('fullcalendar') fullcalendar?: FullCalendarComponent;
+  @ViewChild("fullcalendar") fullcalendar?: FullCalendarComponent;
 
-  constructor(public modalService: ReservationModalService, 
-    private reservationService: ReservationService) {}
+  private eventsSource = new BehaviorSubject<EventInput[]>([]);
+  events$ = this.eventsSource.asObservable();
+
+  constructor(
+    public modalService: ReservationModalService,
+    private reservationService: ReservationService,
+    private changeDetectorRef: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
-    this.calendarOptions = {
-      initialView: 'timeGridWeek',
-      plugins: [dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin],
-      dateClick: this.handleDateClick.bind(this),
-      events: [],
-      headerToolbar: {
-        start: 'title', // will normally be on the left
-        center: '',
-        end: 'today prev,next dayGridMonth,timeGridWeek,timeGridDay,listMonth' // Adjust as per your requirement
-      }
-    };
+    this.events$.subscribe((events) => {
+      this.calendarOptions = {
+        initialView: "timeGridWeek",
+        slotLabelFormat: {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false, // 24-hour format
+        },
+        timeZone: "local",
+        locale: "sl",
+        plugins: [dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin],
+        dateClick: this.handleDateClick.bind(this),
+        eventClick: this.handleEventClick.bind(this),
+        events: events,
+        headerToolbar: {
+          start: "prev,next today",
+          center: "title",
+          end: "dayGridMonth,timeGridWeek,timeGridDay,listMonth",
+        },
+      };
+      this.changeDetectorRef.detectChanges();
+    });
 
-    // Load existing reservations
     this.loadReservations();
   }
 
   handleDateClick(arg: any) {
+    let end = new Date(arg.date);
+    end.setHours(end.getHours() + 1);
     this.startDate = arg.date;
-    this.endDate = arg.date; // Adjust this as per your requirement
+    this.endDate = end;
+    this.selectedReservationId = undefined;
+    this.reservationTitle = "";
     this.modalService.openModal();
   }
-  
 
-  saveReservation(reservation: Reservation) {
-    this.reservationService.createReservation(reservation).subscribe(savedReservation => {
-      const calendarApi = this.fullcalendar?.getApi();
-      calendarApi?.addEvent({
-        title: savedReservation.name,
-        start: savedReservation.start,
-        end: savedReservation.end
-      });
-    });
+  onReservationSaved() {
+    this.loadReservations();
   }
 
   loadReservations() {
-    this.reservationService.getAllReservations().subscribe(reservations => {
-      this.calendarOptions!.events = reservations.map(reservation => ({
+    this.reservationService.getAllReservations().subscribe((reservations) => {
+      const events = reservations.map((reservation) => ({
         id: reservation.id?.toString(),
         title: reservation.name,
         start: reservation.start,
-        end: reservation.end
+        end: reservation.end,
       }));
+      this.eventsSource.next(events);
     });
+  }
+
+  handleEventClick(clickInfo: any) {
+    const clickedEvent = clickInfo.event;
+    this.startDate = clickedEvent.start;
+    this.endDate = clickedEvent.end;
+    this.reservationTitle = clickedEvent.title;
+    this.selectedReservationId = clickedEvent.id;
+
+    this.modalService.openModal();
   }
 }

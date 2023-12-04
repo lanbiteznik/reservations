@@ -1,6 +1,6 @@
 package si.arnes.reservationsbackend.models;
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 public class Reservation {
@@ -8,10 +8,10 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private LocalDateTime start;
-    private LocalDateTime end;
+    private Date start;
+    private Date end;
 
-    public Reservation(String s, LocalDateTime start, LocalDateTime end) {
+    public Reservation(String s, Date start, Date end) {
         this.name=s;
         this.start=start;
         this.end=end;
@@ -37,19 +37,19 @@ public class Reservation {
         this.name = name;
     }
 
-    public LocalDateTime getStart() {
+    public Date getStart() {
         return start;
     }
 
-    public void setStart(LocalDateTime start) {
+    public void setStart(Date start) {
         this.start = start;
     }
 
-    public LocalDateTime getEnd() {
+    public Date getEnd() {
         return end;
     }
 
-    public void setEnd(LocalDateTime end) {
+    public void setEnd(Date end) {
         this.end = end;
     }
 }

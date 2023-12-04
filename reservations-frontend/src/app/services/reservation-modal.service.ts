@@ -19,7 +19,4 @@ export class ReservationModalService {
     return this.displayModalSource.asObservable();
   }
 
-  get displayModalValue(): boolean {
-    return this.displayModalSource.value;
-  }
 }

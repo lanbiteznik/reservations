@@ -3,7 +3,7 @@ package si.arnes.reservationsbackend.dtos;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 public class CreateReservationDTO {
     @NotNull(message = "Name must not be null")
@@ -11,13 +11,13 @@ public class CreateReservationDTO {
 
     @NotNull(message = "Start time must not be null")
     @FutureOrPresent(message = "Start time must be in the future or present")
-    private LocalDateTime start;
+    private Date start;
 
     @NotNull(message = "End time must not be null")
     @FutureOrPresent(message = "End time must be in the future or present")
-    private LocalDateTime end;
+    private Date end;
 
-    public CreateReservationDTO(String name, LocalDateTime start, LocalDateTime end) {
+    public CreateReservationDTO(String name, Date start, Date end) {
         this.name = name;
         this.start = start;
         this.end = end;
@@ -34,19 +34,19 @@ public class CreateReservationDTO {
         this.name = name;
     }
 
-    public LocalDateTime getStart() {
+    public Date getStart() {
         return start;
     }
 
-    public void setStart(LocalDateTime start) {
+    public void setStart(Date start) {
         this.start = start;
     }
 
-    public LocalDateTime getEnd() {
+    public Date getEnd() {
         return end;
     }
 
-    public void setEnd(LocalDateTime end) {
+    public void setEnd(Date end) {
         this.end = end;
     }
 

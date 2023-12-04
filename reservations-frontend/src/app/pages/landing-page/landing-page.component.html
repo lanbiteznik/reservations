@@ -1,7 +1,8 @@
 <div class="flex w-full h-full p-12 justify-center">
-  <full-calendar [options]="calendarOptions" class="w-[69%]">
+  <full-calendar [options]="calendarOptions" #fullcalendar class="w-[69%]">
     <ng-template #eventContent let-arg>
+      <b>{{ arg.event.title }}</b>
     </ng-template>
   </full-calendar>
 </div>
-<app-reservation-form [reservationStart]="startDate" [reservationEnd]="endDate"></app-reservation-form>
+<app-reservation-form *ngIf="(modalService.displayModal$ | async)" [reservationStart]="startDate" [reservationEnd]="endDate" [reservationTitle]="reservationTitle" [selectedReservationId]="selectedReservationId" (reservationSaved)="onReservationSaved()"></app-reservation-form>
