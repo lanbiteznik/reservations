@@ -24,7 +24,8 @@ public class ReservationService {
     public ReservationDTO saveReservation(CreateReservationDTO createReservationDTO) {
         // Check for overlapping reservations
         List<Reservation> overlappingReservations = reservationRepository
-                .findByStartLessThanEqualAndEndGreaterThanEqual(createReservationDTO.getEnd(), createReservationDTO.getStart());
+                .findByStartLessThanAndEndGreaterThan
+                        (createReservationDTO.getEnd(), createReservationDTO.getStart());
         if (!overlappingReservations.isEmpty()) {
             // Conflict found, throw an exception or handle accordingly
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Time slot is already booked");
