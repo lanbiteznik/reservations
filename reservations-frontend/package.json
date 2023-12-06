@@ -23,6 +23,7 @@
     "@fullcalendar/interaction": "^6.1.10",
     "@fullcalendar/list": "^6.1.10",
     "@fullcalendar/timegrid": "^6.1.10",
+    "@ngneat/transloco": "^6.0.1",
     "primeicons": "^6.0.1",
     "primeng": "^17.0.0-rc.1",
     "rxjs": "^7.8.1",
