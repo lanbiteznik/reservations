@@ -1,0 +1,11 @@
+{
+    "newReservation": "New Reservation",
+    "updateReservation": "Update Reservation",
+    "title": "Title",
+    "start": "Start",
+    "end": "End",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete"
+
+}

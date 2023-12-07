@@ -1,19 +1,19 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReservationService {
-  private apiUrl = 'http://localhost:8080/reservations';
+  private apiUrl = environment.apiUrl;
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
-
-  constructor(private http: HttpClient) { }
+  private http = inject(HttpClient);
 
   createReservation(reservation: Reservation): Observable<Reservation> {
     return this.http.post<Reservation>(`${this.apiUrl}/new-reservation`, reservation, this.httpOptions);

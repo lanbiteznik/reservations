@@ -1,0 +1,11 @@
+{
+    "newReservation": "Nova rezervacija",
+    "updateReservation": "Posodobi rezervacijo",
+    "title": "Ime rezervacije",
+    "start": "Začetek",
+    "end": "Konec",
+    "cancel": "Prekliči",
+    "save": "Shrani",
+    "delete": "Izbriši"
+
+}

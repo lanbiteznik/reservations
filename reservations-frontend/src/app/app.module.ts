@@ -12,10 +12,11 @@ import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TranslocoRootModule } from './transloco-root.module';
 
 @NgModule({
-  declarations: [AppComponent, NavBarComponent, LandingPageComponent, ReservationFormComponent],
+  declarations: [ AppComponent, NavBarComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -26,6 +27,9 @@ import { FormsModule } from '@angular/forms';
     DialogModule,
     DynamicDialogModule,
     BrowserAnimationsModule,
+    TranslocoRootModule,
+    ReactiveFormsModule,
+    LandingPageComponent
   ],
   providers: [DialogService],
   bootstrap: [AppComponent],

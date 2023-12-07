@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from "@angular/core";
+import { ChangeDetectorRef, Component, OnInit, ViewChild, inject } from "@angular/core";
 import { CalendarOptions, EventInput } from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -8,15 +8,24 @@ import { ReservationService } from "src/app/services/reservations.service";
 import { FullCalendarComponent } from "@fullcalendar/angular";
 import { ReservationModalService } from "src/app/services/reservation-modal.service";
 import { BehaviorSubject } from "rxjs";
+import { CommonModule } from "@angular/common";
+import { ReactiveFormsModule } from "@angular/forms";
+import { TranslocoModule } from "@ngneat/transloco";
+import { CalendarModule } from "primeng/calendar";
+import { ReservationFormComponent } from "./reservation-form/reservation-form.component";
+import { FullCalendarModule } from '@fullcalendar/angular';
+import { HttpClientModule } from "@angular/common/http";
+
 
 @Component({
+  standalone: true,
   selector: "app-landing-page",
   templateUrl: "./landing-page.component.html",
   styleUrls: ["./landing-page.component.scss"],
+  imports: [CommonModule, ReactiveFormsModule, TranslocoModule, CalendarModule, ReservationFormComponent, FullCalendarModule, HttpClientModule]
 })
 export class LandingPageComponent implements OnInit {
   calendarOptions?: CalendarOptions;
-
   startDate?: Date;
   endDate?: Date;
   selectedReservationId?: number;
@@ -27,11 +36,10 @@ export class LandingPageComponent implements OnInit {
   private eventsSource = new BehaviorSubject<EventInput[]>([]);
   events$ = this.eventsSource.asObservable();
 
-  constructor(
-    public modalService: ReservationModalService,
-    private reservationService: ReservationService,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {}
+  private reservationService=inject(ReservationService);
+  public modalService=inject(ReservationModalService);
+  private changeDetectorRef=inject(ChangeDetectorRef);
+  
 
   ngOnInit() {
     this.events$.subscribe((events) => {
