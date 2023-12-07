@@ -16,7 +16,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslocoRootModule } from './transloco-root.module';
 
 @NgModule({
-  declarations: [AppComponent, NavBarComponent, LandingPageComponent, ReservationFormComponent],
+  declarations: [ AppComponent, NavBarComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -28,7 +28,8 @@ import { TranslocoRootModule } from './transloco-root.module';
     DynamicDialogModule,
     BrowserAnimationsModule,
     TranslocoRootModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    LandingPageComponent
   ],
   providers: [DialogService],
   bootstrap: [AppComponent],

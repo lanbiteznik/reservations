@@ -8,15 +8,24 @@ import { ReservationService } from "src/app/services/reservations.service";
 import { FullCalendarComponent } from "@fullcalendar/angular";
 import { ReservationModalService } from "src/app/services/reservation-modal.service";
 import { BehaviorSubject } from "rxjs";
+import { CommonModule } from "@angular/common";
+import { ReactiveFormsModule } from "@angular/forms";
+import { TranslocoModule } from "@ngneat/transloco";
+import { CalendarModule } from "primeng/calendar";
+import { ReservationFormComponent } from "./reservation-form/reservation-form.component";
+import { FullCalendarModule } from '@fullcalendar/angular';
+import { HttpClientModule } from "@angular/common/http";
+
 
 @Component({
+  standalone: true,
   selector: "app-landing-page",
   templateUrl: "./landing-page.component.html",
   styleUrls: ["./landing-page.component.scss"],
+  imports: [CommonModule, ReactiveFormsModule, TranslocoModule, CalendarModule, ReservationFormComponent, FullCalendarModule, HttpClientModule]
 })
 export class LandingPageComponent implements OnInit {
   calendarOptions?: CalendarOptions;
-
   startDate?: Date;
   endDate?: Date;
   selectedReservationId?: number;

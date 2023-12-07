@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { DialogService } from "primeng/dynamicdialog";
+import { LandingPageComponent } from "./pages/landing-page/landing-page.component";
 
 @Component({
   selector: "app-root",

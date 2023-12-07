@@ -1,3 +1,4 @@
+import { CommonModule } from "@angular/common";
 import {
   Component,
   EventEmitter,
@@ -7,7 +8,10 @@ import {
   Output,
   inject,
 } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
+import { FullCalendarModule } from "@fullcalendar/angular";
+import { TranslocoModule } from "@ngneat/transloco";
+import { CalendarModule } from "primeng/calendar";
 import { Subscription } from "rxjs";
 import { ReservationModalService } from "src/app/services/reservation-modal.service";
 import {
@@ -16,9 +20,11 @@ import {
 } from "src/app/services/reservations.service";
 
 @Component({
+  standalone: true,
   selector: "app-reservation-form",
   templateUrl: "./reservation-form.component.html",
   styleUrls: ["./reservation-form.component.scss"],
+  imports: [CommonModule, ReactiveFormsModule, TranslocoModule, CalendarModule, FullCalendarModule]
 })
 export class ReservationFormComponent implements OnInit, OnDestroy {
   reservationForm?: FormGroup;
@@ -36,7 +42,7 @@ export class ReservationFormComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.reservationForm = new FormGroup({
       title: new FormControl<String>('', Validators.required),
-      start: new FormControl<Date | undefined>(undefined, Validators.required),
+      start: new FormControl<Date | undefined>(this.reservationStart, Validators.required),
       end: new FormControl<Date | undefined>(this.reservationEnd, Validators.required)
     });
 
@@ -66,7 +72,6 @@ export class ReservationFormComponent implements OnInit, OnDestroy {
       };
 
       if (this.selectedReservationId) {
-        // Update existing reservation
         this.reservationService
           .updateReservation(this.selectedReservationId, reservationData)
           .subscribe({
