@@ -7,6 +7,7 @@ import {
   Output,
   inject,
 } from "@angular/core";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Subscription } from "rxjs";
 import { ReservationModalService } from "src/app/services/reservation-modal.service";
 import {
@@ -20,19 +21,25 @@ import {
   styleUrls: ["./reservation-form.component.scss"],
 })
 export class ReservationFormComponent implements OnInit, OnDestroy {
+  reservationForm?: FormGroup;
+  displayModal: boolean = false;
   @Input() reservationStart?: Date;
   @Input() reservationEnd?: Date;
   @Input() selectedReservationId?: number;
   @Input() reservationTitle?: string;
-  displayModal: boolean = false;
   private subscription: Subscription = new Subscription();
   @Output() reservationSaved = new EventEmitter<void>();
 
   public modalService = inject(ReservationModalService);
-  private reservationService = inject(ReservationService);
-  
+  private reservationService = inject(ReservationService);  
 
   ngOnInit() {
+    this.reservationForm = new FormGroup({
+      title: new FormControl<String>('', Validators.required),
+      start: new FormControl<Date | undefined>(undefined, Validators.required),
+      end: new FormControl<Date | undefined>(this.reservationEnd, Validators.required)
+    });
+
     this.subscription.add(
       this.modalService.displayModal$.subscribe((value) => {
         this.displayModal = value;
@@ -49,15 +56,13 @@ export class ReservationFormComponent implements OnInit, OnDestroy {
 
   save() {
     if (
-      !!this.reservationTitle &&
-      !!this.reservationStart &&
-      !!this.reservationEnd
+      this.reservationForm?.valid
     ) {
       const reservationData: Reservation = {
         id: this.selectedReservationId,
-        name: this.reservationTitle,
-        start: new Date(this.reservationStart),
-        end: new Date(this.reservationEnd),
+        name: this.reservationForm?.value.title,
+        start: this.reservationForm?.value.start,
+        end: this.reservationForm?.value.end,
       };
 
       if (this.selectedReservationId) {
@@ -99,13 +104,5 @@ export class ReservationFormComponent implements OnInit, OnDestroy {
           error: (error) => console.error("Error deleting reservation", error),
         });
     }
-  }
-
-  validateForm(): boolean {
-    return (
-      !!this.reservationTitle &&
-      !!this.reservationStart &&
-      !!this.reservationEnd
-    );
   }
 }

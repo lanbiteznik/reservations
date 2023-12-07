@@ -1,27 +1,34 @@
-<div class="fixed inset-0 bg-gray-600 bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50">
-  <div class="w-[50%] bg-slate-100 px-14 py-12 rounded-2xl">
-    <div class="p-fluid flex flex-col gap-4">
-      <div class="text-2xl text-center" [textContent]="selectedReservationId ? ('updateReservation' | transloco) : ('newReservation' | transloco)"></div>
-      <div class="p-field">
-        <label for="title">{{'title' | transloco}}</label>
-        <input id="title" type="text" pInputText [(ngModel)]="reservationTitle" class="p-inputtext p-component border-gray-400 border px-2 py-1">
-      </div>
+@if (reservationForm) {
+  <div class="fixed inset-0 bg-gray-600 bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50">
+    <div class="w-[50%] bg-slate-100 px-14 py-12 rounded-2xl">
+      <form *ngIf="reservationForm" [formGroup]="reservationForm" (ngSubmit)="save()">
+        <div class="p-fluid flex flex-col gap-4">
 
-      <div class="p-field">
-        <label for="start">{{'start' | transloco}}</label>
-        <p-calendar id="start" [(ngModel)]="reservationStart" [showTime]="true" class="custom-input"></p-calendar>
-      </div>
+          <div class="text-2xl text-center" [textContent]="selectedReservationId ? ('updateReservation' | transloco) : ('newReservation' | transloco)"></div>
+          
+          <div class="p-field">
+            <label for="title">{{'title' | transloco}}</label>
+            <input id="title" type="text" pInputText formControlName="title" class="p-inputtext p-component border-gray-400 border px-2 py-1">
+          </div>
 
-      <div class="p-field">
-        <label for="end">{{'end' | transloco}}</label>
-        <p-calendar id="end" [(ngModel)]="reservationEnd" [showTime]="true" class="custom-input"></p-calendar>
-      </div>
+          <div class="p-field">
+            <label for="start">{{'start' | transloco}}</label>
+            <p-calendar id="start" formControlName="start" [showTime]="true" class="custom-input"></p-calendar>
+          </div>
 
-      <div class="flex justify-between mt-8">
-        <button pButton label="{{'delete' | transloco}}" (click)="deleteReservation()" *ngIf="selectedReservationId" class="p-button p-component p-button-success bg-red-500 py-2 px-8 rounded-xl w-min text-slate-100"></button>
-        <button pButton label="{{'cancel' | transloco}}" class="p-button p-component p-button-success py-2 px-8 rounded-xl w-min text-slate-800" (click)="close()"></button>
-        <button pButton label="{{'save' | transloco}}" class="p-button p-component p-button-success bg-slate-500 py-2 px-8 rounded-xl w-min text-slate-100" (click)="save()"></button>
-      </div>
+          <div class="p-field">
+            <label for="end">{{'end' | transloco}}</label>
+            <p-calendar id="end" formControlName="end" [showTime]="true" class="custom-input"></p-calendar>
+          </div>
+
+          <div class="flex justify-between mt-8">
+            <button type="button" (click)="deleteReservation()" *ngIf="selectedReservationId" class="p-button p-component bg-red-500 py-2 px-8 rounded-xl w-min text-slate-100">{{'delete' | transloco}}</button>
+            <button type="button" class="p-button p-component py-2 px-8 rounded-xl w-min text-slate-800" (click)="close()">{{'cancel' | transloco}}</button>
+            <button type="submit" class="p-button p-component bg-slate-500 py-2 px-8 rounded-xl w-min text-slate-100">{{'save' | transloco}}</button>
+          </div>
+
+        </div>
+      </form>
     </div>
   </div>
-</div>
+}
