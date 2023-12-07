@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from "@angular/core";
+import { ChangeDetectorRef, Component, OnInit, ViewChild, inject } from "@angular/core";
 import { CalendarOptions, EventInput } from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -27,11 +27,10 @@ export class LandingPageComponent implements OnInit {
   private eventsSource = new BehaviorSubject<EventInput[]>([]);
   events$ = this.eventsSource.asObservable();
 
-  constructor(
-    public modalService: ReservationModalService,
-    private reservationService: ReservationService,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {}
+  private reservationService=inject(ReservationService);
+  public modalService=inject(ReservationModalService);
+  private changeDetectorRef=inject(ChangeDetectorRef);
+  
 
   ngOnInit() {
     this.events$.subscribe((events) => {

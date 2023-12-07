@@ -5,6 +5,7 @@ import {
   OnInit,
   OnDestroy,
   Output,
+  inject,
 } from "@angular/core";
 import { Subscription } from "rxjs";
 import { ReservationModalService } from "src/app/services/reservation-modal.service";
@@ -27,10 +28,9 @@ export class ReservationFormComponent implements OnInit, OnDestroy {
   private subscription: Subscription = new Subscription();
   @Output() reservationSaved = new EventEmitter<void>();
 
-  constructor(
-    public modalService: ReservationModalService,
-    private reservationService: ReservationService
-  ) {}
+  public modalService = inject(ReservationModalService);
+  private reservationService = inject(ReservationService);
+  
 
   ngOnInit() {
     this.subscription.add(
