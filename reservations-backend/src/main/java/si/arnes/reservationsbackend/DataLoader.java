@@ -24,7 +24,7 @@ public class DataLoader {
     }
 
     public Date convertToDate(LocalDateTime localDateTime) {
-        ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.systemDefault());
+        var zonedDateTime = localDateTime.atZone(ZoneId.systemDefault());
         return Date.from(zonedDateTime.toInstant());
     }
 }
