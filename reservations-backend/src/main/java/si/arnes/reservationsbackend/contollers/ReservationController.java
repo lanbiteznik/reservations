@@ -20,32 +20,32 @@ public class ReservationController {
     @Autowired
     private ReservationService reservationService;
 
-    @PostMapping("/new-reservation")
+    @PostMapping("/reservation")
     public ResponseEntity<ReservationDTO> createReservation(@Valid @RequestBody CreateReservationDTO createReservationDTO) {
         ReservationDTO reservationDTO = reservationService.saveReservation(createReservationDTO);
         return ResponseEntity.ok(reservationDTO);
     }
 
-    @GetMapping("/get-all")
+    @GetMapping()
     public ResponseEntity<List<ReservationDTO>> getAllReservations() {
         List<ReservationDTO> reservationDTOs = reservationService.getAllReservations();
         return ResponseEntity.ok(reservationDTOs);
     }
 
-    @GetMapping("/get-reservation/{id}")
+    @GetMapping("/reservation/{id}")
     public ResponseEntity<ReservationDTO> getReservationById(@PathVariable Long id) {
         return reservationService.getReservationById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/delete-reservation/{id}")
+    @DeleteMapping("/reservation/{id}")
     public ResponseEntity<Void> deleteReservation(@PathVariable Long id) {
         reservationService.deleteReservation(id);
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/update-reservation/{id}")
+    @PutMapping("/reservation/{id}")
     public ResponseEntity<ReservationDTO> updateReservation(@PathVariable Long id,
                                                             @Valid @RequestBody UpdateReservationDTO updateReservationDTO) {
         ReservationDTO updatedReservationDTO = reservationService.updateReservation(id, updateReservationDTO);

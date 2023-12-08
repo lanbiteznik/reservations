@@ -41,7 +41,7 @@ export class ReservationFormComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.reservationForm = new FormGroup({
-      title: new FormControl<String>('', Validators.required),
+      title: new FormControl<String | undefined>(this.reservationTitle, Validators.required),
       start: new FormControl<Date | undefined>(this.reservationStart, Validators.required),
       end: new FormControl<Date | undefined>(this.reservationEnd, Validators.required)
     });

@@ -23,20 +23,20 @@ public class ReservationService {
 
     public ReservationDTO saveReservation(CreateReservationDTO createReservationDTO) {
         // Check for overlapping reservations
-        List<Reservation> overlappingReservations = reservationRepository
+        var overlappingReservations = reservationRepository
                 .findByStartLessThanAndEndGreaterThan
-                        (createReservationDTO.getEnd(), createReservationDTO.getStart());
+                        (createReservationDTO.end(), createReservationDTO.start());
         if (!overlappingReservations.isEmpty()) {
             // Conflict found, throw an exception or handle accordingly
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Time slot is already booked");
         }
 
-        Reservation reservation = new Reservation();
-        reservation.setName(createReservationDTO.getName());
-        reservation.setStart(createReservationDTO.getStart());
-        reservation.setEnd(createReservationDTO.getEnd());
+        var reservation = new Reservation();
+        reservation.setName(createReservationDTO.name());
+        reservation.setStart(createReservationDTO.start());
+        reservation.setEnd(createReservationDTO.end());
 
-        Reservation savedReservation = reservationRepository.save(reservation);
+        var savedReservation = reservationRepository.save(reservation);
         return convertToDTO(savedReservation);
     }
 
@@ -56,24 +56,19 @@ public class ReservationService {
     }
 
     private ReservationDTO convertToDTO(Reservation reservation) {
-        ReservationDTO dto = new ReservationDTO();
-        dto.setId(reservation.getId());
-        dto.setName(reservation.getName());
-        dto.setStart(reservation.getStart());
-        dto.setEnd(reservation.getEnd());
-        return dto;
+        return new ReservationDTO(reservation.getId(),reservation.getName(),reservation.getStart(),reservation.getEnd());
     }
 
     public ReservationDTO updateReservation(Long id, UpdateReservationDTO updateReservationDTO) {
-        Reservation reservation = reservationRepository.findById(id)
+        var reservation = reservationRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Reservation not found"));
 
         // Update reservation details
-        reservation.setName(updateReservationDTO.getName());
-        reservation.setStart(updateReservationDTO.getStart());
-        reservation.setEnd(updateReservationDTO.getEnd());
+        reservation.setName(updateReservationDTO.name());
+        reservation.setStart(updateReservationDTO.start());
+        reservation.setEnd(updateReservationDTO.end());
 
-        Reservation updatedReservation = reservationRepository.save(reservation);
+        var updatedReservation = reservationRepository.save(reservation);
         return convertToDTO(updatedReservation);
     }
 }

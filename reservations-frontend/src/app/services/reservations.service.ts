@@ -16,23 +16,23 @@ export class ReservationService {
   private http = inject(HttpClient);
 
   createReservation(reservation: Reservation): Observable<Reservation> {
-    return this.http.post<Reservation>(`${this.apiUrl}/new-reservation`, reservation, this.httpOptions);
+    return this.http.post<Reservation>(`${this.apiUrl}/reservation`, reservation, this.httpOptions);
   }
 
   getAllReservations(): Observable<Reservation[]> {
-    return this.http.get<Reservation[]>(`${this.apiUrl}/get-all`);
+    return this.http.get<Reservation[]>(`${this.apiUrl}`);
   }
 
   getReservationById(id: number): Observable<Reservation> {
-    return this.http.get<Reservation>(`${this.apiUrl}/get-reservation/${id}`);
+    return this.http.get<Reservation>(`${this.apiUrl}/reservation/${id}`);
   }
 
   updateReservation(id: number, reservation: Reservation): Observable<any> {
-    return this.http.put(`${this.apiUrl}/update-reservation/${id}`, reservation, this.httpOptions);
+    return this.http.put(`${this.apiUrl}/reservation/${id}`, reservation, this.httpOptions);
   }
 
   deleteReservation(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/delete-reservation/${id}`, this.httpOptions);
+    return this.http.delete(`${this.apiUrl}/reservation/${id}`, this.httpOptions);
   }
 }
 
