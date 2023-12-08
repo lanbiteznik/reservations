@@ -1,8 +1,14 @@
 <div class="flex w-full h-full p-12 justify-center">
-  <full-calendar [options]="calendarOptions" #fullcalendar class="w-[69%]">
-    <ng-template #eventContent let-arg>
-      <b>{{ arg.event.title }}</b>
-    </ng-template>
-  </full-calendar>
+  <div  class="w-[69%] flex flex-col gap-4">
+    <div class="flex flex-row w-full justify-end"><button type="button" class="p-button p-component h-[32px] w-[32px] flex flex-row justify-around bg-[#737E8A] rounded-[0.25em] text-slate-100 " (click)="switchLanguage()">{{ lang }}</button> </div>
+    <full-calendar [options]="calendarOptions" #fullcalendar>
+    @if (events$ | async) {
+      <ng-template #eventContent let-arg>
+        <b>{{ arg.event.title }}</b>
+      </ng-template>
+    }
+  </full-calendar></div>
 </div>
-<app-reservation-form *ngIf="(modalService.displayModal$ | async)" [reservationStart]="startDate" [reservationEnd]="endDate" [reservationTitle]="reservationTitle" [selectedReservationId]="selectedReservationId" (reservationSaved)="onReservationSaved()"></app-reservation-form>
+@if(modalService.displayModal$ | async) {
+  <app-reservation-form [reservationStart]="startDate" [reservationEnd]="endDate" [reservationTitle]="reservationTitle" [selectedReservationId]="selectedReservationId" (reservationSaved)="onReservationSaved()"></app-reservation-form>
+}

@@ -3,6 +3,7 @@ package si.arnes.reservationsbackend;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import si.arnes.reservationsbackend.models.Reservation;
 import si.arnes.reservationsbackend.repository.ReservationRepository;
 
@@ -12,6 +13,7 @@ import java.time.ZonedDateTime;
 import java.util.Date;
 
 @Configuration
+@Profile("dev")
 public class DataLoader {
 
     @Bean

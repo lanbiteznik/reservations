@@ -1,7 +1,7 @@
 @if (reservationForm) {
   <div class="fixed inset-0 bg-gray-600 bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50">
     <div class="w-[50%] bg-slate-100 px-14 py-12 rounded-2xl">
-      <form *ngIf="reservationForm" [formGroup]="reservationForm" (ngSubmit)="save()">
+      <form [formGroup]="reservationForm" (ngSubmit)="save()">
         <div class="p-fluid flex flex-col gap-4">
 
           <div class="text-2xl text-center" [textContent]="selectedReservationId ? ('updateReservation' | transloco) : ('newReservation' | transloco)"></div>
@@ -22,9 +22,9 @@
           </div>
 
           <div class="flex justify-between mt-8">
-            <button type="button" (click)="deleteReservation()" *ngIf="selectedReservationId" class="p-button p-component bg-red-500 py-2 px-8 rounded-xl w-min text-slate-100">{{'delete' | transloco}}</button>
-            <button type="button" class="p-button p-component py-2 px-8 rounded-xl w-min text-slate-800" (click)="close()">{{'cancel' | transloco}}</button>
-            <button type="submit" class="p-button p-component bg-slate-500 py-2 px-8 rounded-xl w-min text-slate-100">{{'save' | transloco}}</button>
+            @if(selectedReservationId){ <button type="button" (click)="deleteReservation()" class="p-button p-component py-2 px-8 rounded-xl w-min text-slate-100 bg-gray-500">{{'delete' | transloco}}</button>}
+            <button type="button" class="p-button p-component py-2 px-8 bg-red-500 rounded-xl w-min text-slate-100 font-semibold" (click)="close()">{{'cancel' | transloco}}</button>
+            <button type="submit" class="p-button p-component bg-blue-500 py-2 px-8 rounded-xl w-min text-slate-100 font-semibold">{{'save' | transloco}}</button>
           </div>
 
         </div>

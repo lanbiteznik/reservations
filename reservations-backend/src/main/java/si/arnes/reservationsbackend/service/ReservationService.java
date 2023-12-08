@@ -25,16 +25,16 @@ public class ReservationService {
         // Check for overlapping reservations
         var overlappingReservations = reservationRepository
                 .findByStartLessThanAndEndGreaterThan
-                        (createReservationDTO.getEnd(), createReservationDTO.getStart());
+                        (createReservationDTO.end(), createReservationDTO.start());
         if (!overlappingReservations.isEmpty()) {
             // Conflict found, throw an exception or handle accordingly
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Time slot is already booked");
         }
 
         var reservation = new Reservation();
-        reservation.setName(createReservationDTO.getName());
-        reservation.setStart(createReservationDTO.getStart());
-        reservation.setEnd(createReservationDTO.getEnd());
+        reservation.setName(createReservationDTO.name());
+        reservation.setStart(createReservationDTO.start());
+        reservation.setEnd(createReservationDTO.end());
 
         var savedReservation = reservationRepository.save(reservation);
         return convertToDTO(savedReservation);
@@ -56,12 +56,7 @@ public class ReservationService {
     }
 
     private ReservationDTO convertToDTO(Reservation reservation) {
-        var dto = new ReservationDTO();
-        dto.setId(reservation.getId());
-        dto.setName(reservation.getName());
-        dto.setStart(reservation.getStart());
-        dto.setEnd(reservation.getEnd());
-        return dto;
+        return new ReservationDTO(reservation.getId(),reservation.getName(),reservation.getStart(),reservation.getEnd());
     }
 
     public ReservationDTO updateReservation(Long id, UpdateReservationDTO updateReservationDTO) {
@@ -69,9 +64,9 @@ public class ReservationService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Reservation not found"));
 
         // Update reservation details
-        reservation.setName(updateReservationDTO.getName());
-        reservation.setStart(updateReservationDTO.getStart());
-        reservation.setEnd(updateReservationDTO.getEnd());
+        reservation.setName(updateReservationDTO.name());
+        reservation.setStart(updateReservationDTO.start());
+        reservation.setEnd(updateReservationDTO.end());
 
         var updatedReservation = reservationRepository.save(reservation);
         return convertToDTO(updatedReservation);
