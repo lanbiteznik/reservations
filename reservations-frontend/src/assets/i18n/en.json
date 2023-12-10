@@ -6,6 +6,7 @@
     "end": "End",
     "cancel": "Cancel",
     "save": "Save",
-    "delete": "Delete"
+    "delete": "Delete",
+    "titleRequired": "Title is required"
 
 }

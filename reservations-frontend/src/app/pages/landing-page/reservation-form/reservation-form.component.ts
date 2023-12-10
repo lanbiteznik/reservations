@@ -14,17 +14,20 @@ import { TranslocoModule } from "@ngneat/transloco";
 import { CalendarModule } from "primeng/calendar";
 import { Subscription } from "rxjs";
 import { ReservationModalService } from "src/app/services/reservation-modal.service";
+import { ToastModule } from 'primeng/toast';
 import {
   ReservationService,
   Reservation,
 } from "src/app/services/reservations.service";
+import { MessageService } from "primeng/api";
 
 @Component({
   standalone: true,
   selector: "app-reservation-form",
   templateUrl: "./reservation-form.component.html",
   styleUrls: ["./reservation-form.component.scss"],
-  imports: [CommonModule, ReactiveFormsModule, TranslocoModule, CalendarModule, FullCalendarModule]
+  imports: [CommonModule, ReactiveFormsModule, TranslocoModule, CalendarModule, FullCalendarModule, ToastModule],
+  providers: [MessageService]
 })
 export class ReservationFormComponent implements OnInit, OnDestroy {
   reservationForm?: FormGroup;
@@ -34,10 +37,12 @@ export class ReservationFormComponent implements OnInit, OnDestroy {
   @Input() selectedReservationId?: number;
   @Input() reservationTitle?: string;
   private subscription: Subscription = new Subscription();
-  @Output() reservationSaved = new EventEmitter<void>();
+  @Output() reservationSaved = new EventEmitter<string>();
+  
 
   public modalService = inject(ReservationModalService);
-  private reservationService = inject(ReservationService);  
+  private reservationService = inject(ReservationService);
+  private messageService = inject(MessageService);
 
   ngOnInit() {
     this.reservationForm = new FormGroup({
@@ -76,24 +81,48 @@ export class ReservationFormComponent implements OnInit, OnDestroy {
           .updateReservation(this.selectedReservationId, reservationData)
           .subscribe({
             next: () => {
-              this.reservationSaved.emit();
+              this.reservationSaved.emit('updated');
               this.modalService.closeModal();
             },
             error: (error) =>
-              console.error("Error updating reservation", error),
+            {
+              const errorMessages = Object.values(error.error).join('\n');
+              console.error("Error updating reservation", error);
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: errorMessages
+              });
+            },
           });
       } else {
         // Create new reservation
         this.reservationService.createReservation(reservationData).subscribe({
           next: () => {
-            this.reservationSaved.emit();
+            this.reservationSaved.emit('success');
             this.modalService.closeModal();
+            
           },
-          error: (error) => console.error("Error saving reservation", error),
-        });
+          error: (error) => 
+          {
+            const errorMessages = Object.values(error.error).join('\n');
+            console.error("Error saving reservation", error),
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: errorMessages
+            });
+        }});
       }
     } else {
       console.error("Error saving reservation");
+      /*this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: "Error saving reservation"
+      });*/
+      this.reservationForm?.markAllAsTouched();
+      return;
     }
   }
 
@@ -103,7 +132,7 @@ export class ReservationFormComponent implements OnInit, OnDestroy {
         .deleteReservation(this.selectedReservationId)
         .subscribe({
           next: () => {
-            this.reservationSaved.emit(); // This will trigger the refresh of events
+            this.reservationSaved.emit("deleted"); // This will trigger the refresh of events
             this.modalService.closeModal();
           },
           error: (error) => console.error("Error deleting reservation", error),

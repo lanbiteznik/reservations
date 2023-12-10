@@ -6,6 +6,7 @@
     "end": "Konec",
     "cancel": "Prekliči",
     "save": "Shrani",
-    "delete": "Izbriši"
+    "delete": "Izbriši",
+    "titleRequired": "Ime rezervacije je obvezen podatek"
 
 }

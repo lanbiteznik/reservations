@@ -17,6 +17,8 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import { HttpClientModule } from "@angular/common/http";
 import slLocale from '@fullcalendar/core/locales/sl';
 import enLocale from '@fullcalendar/core/locales/en-gb';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 
 @Component({
@@ -24,7 +26,8 @@ import enLocale from '@fullcalendar/core/locales/en-gb';
   selector: "app-landing-page",
   templateUrl: "./landing-page.component.html",
   styleUrls: ["./landing-page.component.scss"],
-  imports: [CommonModule, ReactiveFormsModule, TranslocoModule, CalendarModule, ReservationFormComponent, FullCalendarModule, HttpClientModule]
+  imports: [CommonModule, ReactiveFormsModule, TranslocoModule, CalendarModule, ReservationFormComponent, FullCalendarModule, HttpClientModule, ToastModule],
+  providers: [MessageService]
 })
 export class LandingPageComponent implements OnInit, OnDestroy {
   calendarOptions?: CalendarOptions;
@@ -68,6 +71,7 @@ export class LandingPageComponent implements OnInit, OnDestroy {
   private reservationService = inject(ReservationService);
   public modalService = inject(ReservationModalService);
   public translocoService = inject(TranslocoService);
+  private messageService = inject(MessageService);
   
 
   ngOnInit() {
@@ -88,7 +92,28 @@ export class LandingPageComponent implements OnInit, OnDestroy {
     this.modalService.openModal();
   }
 
-  onReservationSaved() {
+  onReservationSaved(event: string) {
+    if(event==='success'){
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Reservation saved successfully'
+      });
+    }
+    if(event==='updated'){
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Reservation successfully updated'
+      });
+    }
+    if(event==='deleted'){
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Reservation successfully deleted'
+      });
+    }
     this.loadReservations();
   }
 

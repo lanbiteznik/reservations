@@ -6,9 +6,16 @@
 
           <div class="text-2xl text-center" [textContent]="selectedReservationId ? ('updateReservation' | transloco) : ('newReservation' | transloco)"></div>
           
-          <div class="p-field">
+          <div class="p-field form-group" >
             <label for="title">{{'title' | transloco}}</label>
-            <input id="title" type="text" pInputText formControlName="title" class="p-inputtext p-component border-gray-400 border px-2 py-1">
+            <input  id="title" type="text" pInputText formControlName="title" class="p-inputtext p-component border-gray-400 border px-2 py-1" 
+            [ngClass]="{'input-error': reservationForm.get('title')?.invalid && reservationForm.get('title')?.touched}">
+            @if(reservationForm.get('title')?.invalid && reservationForm.get('title')?.touched){ 
+              <small 
+                class="p-error" for="titleReqired">
+                  {{'titleRequired' | transloco}}
+              </small>
+          }
           </div>
 
           <div class="p-field">
@@ -32,3 +39,4 @@
     </div>
   </div>
 }
+<p-toast class="whitespace-pre-wrap"></p-toast>

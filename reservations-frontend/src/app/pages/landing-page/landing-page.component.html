@@ -9,6 +9,8 @@
     }
   </full-calendar></div>
 </div>
+
 @if(modalService.displayModal$ | async) {
-  <app-reservation-form [reservationStart]="startDate" [reservationEnd]="endDate" [reservationTitle]="reservationTitle" [selectedReservationId]="selectedReservationId" (reservationSaved)="onReservationSaved()"></app-reservation-form>
+  <app-reservation-form [reservationStart]="startDate" [reservationEnd]="endDate" [reservationTitle]="reservationTitle" [selectedReservationId]="selectedReservationId" (reservationSaved)="onReservationSaved($event)"></app-reservation-form>
 }
+<p-toast class="whitespace-pre-wrap"></p-toast>

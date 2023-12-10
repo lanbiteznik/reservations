@@ -4,3 +4,19 @@
     border-width: 1px;
     padding: 0.25rem 0.5rem; 
 }
+
+.form-group {
+    margin-bottom: 1rem;
+  
+    .input-error {
+      border-color: red;
+      // other styles for error state
+    }
+  
+    .p-error {
+      color: red;
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+      // other styles for error message
+    }
+  }

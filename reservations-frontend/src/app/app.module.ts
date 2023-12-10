@@ -14,6 +14,8 @@ import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslocoRootModule } from './transloco-root.module';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
   declarations: [ AppComponent, NavBarComponent],
@@ -29,9 +31,10 @@ import { TranslocoRootModule } from './transloco-root.module';
     BrowserAnimationsModule,
     TranslocoRootModule,
     ReactiveFormsModule,
-    LandingPageComponent
+    LandingPageComponent,
+    ToastModule
   ],
-  providers: [DialogService],
+  providers: [DialogService,MessageService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
